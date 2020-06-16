@@ -77,6 +77,8 @@ alias la="ls -a"
 alias lal="ls -a -l"
 alias rm="rm -i"
 alias dtf='/usr/local/bin/git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME'
+alias gh="open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@'`| head -n1"
+
 
 
 function runfale() {
