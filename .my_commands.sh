@@ -2,6 +2,9 @@
 
 # prints the input
 
+export LOCAL_IP=`ipconfig getifaddr en0`
+
+
 function vsc() {
   dir=".";
 
@@ -31,29 +34,12 @@ function vsc() {
 
   case "$subcommand" in
     srv)
-      open=1
-      while getopts ":hsof:" OPTION; do
-        case $OPTION in
-          o )
-            open=0
-            ;;
-          f )
-            [ -f $OPTARG ] || [ -d $OPTARG ] && dir=$OPTARG
-            ;;
-          \? ) 
-            echo "Usage: vscsrv [-o]"
-            return
-            ;;
-          : )
-            dir="."
-        esac
-      done
+      open=0
       shift $((OPTIND -1))
       cd $dir
       open -a "Visual Studio Code" .
       if [ $open = 0 ]; then
-        open "http://0.0.0.0:3000"
-        php -S 0.0.0.0:3000
+        browser-sync start -s -f . --no-notify --host $LOCAL_IP --port 3000
       else 
         open "http://localhost:3000"
         php -S localhost:3000
@@ -76,8 +62,8 @@ alias ll="ls -l"
 alias la="ls -a"
 alias lal="ls -a -l"
 alias rm="rm -i"
-alias dtf='/usr/local/bin/git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME'
-alias gh="open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@'`| head -n1"
+alias git_dotfiles='/usr/local/bin/git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME'
+
 
 
 
